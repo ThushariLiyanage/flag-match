@@ -2,7 +2,7 @@ import React from 'react';
 import './TimerDisplay.css';
 
 function TimerDisplay({ timeRemaining }) {
-  const isDanger = timeRemaining <= 10;
+  const isDanger = timeRemaining <= 3;
 
   return (
     <div className={`timer-display ${isDanger ? 'timer-danger' : ''}`}>

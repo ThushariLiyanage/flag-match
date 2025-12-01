@@ -60,9 +60,9 @@ const LEVEL_CONFIGS = {
 };
 
 const TIMER_CONFIG = {
-  easy: 20,
-  medium: 20,
-  hard: 20,
+  easy: 8,
+  medium: 12,
+  hard: 15,
   bonusTime: {
     easy: 10,
     medium: 10,
@@ -324,6 +324,14 @@ function Game() {
     setCards(prev => prev.map(c => (c.id === cardId ? { ...c, isFlipped: true } : c)));
     setIsRevealing(true);
     setFeedback({ cardId, isCorrect });
+
+    // Reset the per-flag timer when the player selects the right flag
+        // (unless this was the final question for the level)
+        const questionsForLevel = LEVEL_CONFIGS[difficulty]?.questionsPerLevel || 2;
+        const isLastQuestion = currentQuestionIndex >= questionsForLevel - 1;
+        if (!isLastQuestion) {
+          startLevelTimer(difficulty);
+        }
 
     setTimeout(() => {
       if (isCorrect) {

@@ -65,13 +65,82 @@ router.post('/score', auth, async (req, res) => {
     if (finalScore > user.totalScore) {
       user.totalScore = finalScore;
     }
-    
+
     // Increment number of voyages completed
     user.voyages = (user.voyages || 0) + 1;
-    
+
     await user.save();
     res.json({ totalScore: user.totalScore, voyages: user.voyages });
 
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET /api/user/progression
+// @desc    Get user's completed levels and unlocked status
+router.get('/progression', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    const completedLevels = user.completedLevels || [];
+    const unlockedLevels = ['easy'];
+
+    if (completedLevels.includes('easy')) {
+      unlockedLevels.push('medium');
+    }
+    if (completedLevels.includes('medium')) {
+      unlockedLevels.push('hard');
+    }
+
+    res.json({
+      completedLevels,
+      unlockedLevels
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   POST /api/user/complete-level
+// @desc    Mark a level as completed and unlock the next one
+router.post('/complete-level', auth, async (req, res) => {
+  const { difficulty } = req.body;
+
+  if (!['easy', 'medium', 'hard'].includes(difficulty)) {
+    return res.status(400).json({ msg: 'Invalid difficulty level' });
+  }
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Add level to completed list if not already there
+    if (!user.completedLevels.includes(difficulty)) {
+      user.completedLevels.push(difficulty);
+      await user.save();
+    }
+
+    // Calculate unlocked levels
+    const unlockedLevels = ['easy'];
+    if (user.completedLevels.includes('easy')) {
+      unlockedLevels.push('medium');
+    }
+    if (user.completedLevels.includes('medium')) {
+      unlockedLevels.push('hard');
+    }
+
+    res.json({
+      completedLevels: user.completedLevels,
+      unlockedLevels
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

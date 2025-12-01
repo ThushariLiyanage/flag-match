@@ -41,6 +41,11 @@ const UserSchema = new mongoose.Schema({
   voyages: {
     type: Number,
     default: 0
+  },
+  completedLevels: {
+    type: [String],
+    default: [],
+    enum: ['easy', 'medium', 'hard']
   }
 });
 

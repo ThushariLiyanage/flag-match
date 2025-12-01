@@ -1,0 +1,532 @@
+.banana-game-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 31, 43, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-container {
+  background: #efdfbf;
+  border: 2px solid #B8962F;
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 2px 8px 0 rgba(92, 84, 66, 0.3), 0 0 100px 0 rgba(139, 69, 19, 0.1);
+}
+
+.banana-loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.banana-loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.banana-spinner {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-ring {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(212, 175, 55, 0.2);
+  border-top-color: #D4AF37;
+  border-right-color: #D4AF37;
+  border-radius: 50%;
+  animation: spin-animation 1s linear infinite;
+}
+
+@keyframes spin-animation {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0C1F2B;
+  margin: 0;
+}
+
+.loading-subtitle {
+  font-size: 14px;
+  color: #163B52;
+  margin: 0;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #D4AF37;
+  animation: pulse-dot 1.4s infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse-dot {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.game-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0C1F2B;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.game-subtitle {
+  font-size: 14px;
+  color: #163B52;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.banana-quest-image {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 20px 0;
+  display: block;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0C1F2B;
+  margin: 0 0 12px 0;
+}
+
+.banana-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #B8962F;
+  border-radius: 8px;
+  background: #fff;
+  color: #0C1F2B;
+  text-align: center;
+  margin-bottom: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.banana-input:focus {
+  outline: none;
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.message-display {
+  height: 30px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.message-display.success {
+  color: #155724;
+  background: rgba(40, 167, 69, 0.1);
+}
+
+.message-display.error {
+  color: #721c24;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.banana-buttons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.banana-submit-btn,
+.banana-cancel-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid #8A7023;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-submit-btn {
+  background: #D4AF37;
+  color: #0C1F2B;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 4px 8px 0 rgba(27, 73, 101, 0.3);
+}
+
+.banana-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 6px 12px 0 rgba(27, 73, 101, 0.4);
+}
+
+.banana-submit-btn:active {
+  transform: translateY(0);
+}
+
+.banana-cancel-btn {
+  background: #efdfbf;
+  color: #0C1F2B;
+  border-color: #8A7023;
+}
+
+.banana-cancel-btn:hover {
+  background: #ddd0b0;
+}
+
+.banana-cancel-btn:active {
+  transform: translateY(0);
+}
+
+.banana-game-modal {
+  background: #efdfbf;
+  border: 2px solid #B8962F;
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 2px 8px 0 rgba(92, 84, 66, 0.3), 0 0 100px 0 rgba(139, 69, 19, 0.1);
+}
+
+.banana-game-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.2);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0C1F2B;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  font-weight: 700;
+}
+
+.banana-game-close:hover {
+  background: rgba(212, 175, 55, 0.4);
+  transform: rotate(90deg);
+}
+
+.banana-game-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.banana-game-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0C1F2B;
+  margin: 0 0 8px 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-subtitle {
+  font-size: 14px;
+  color: #163B52;
+  margin: 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.banana-game-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.banana-game-stat-label {
+  font-size: 12px;
+  color: #8A7023;
+  font-weight: 500;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-stat-value {
+  font-size: 18px;
+  color: #0C1F2B;
+  font-weight: 700;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-start-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.banana-emoji-display {
+  font-size: 80px;
+  line-height: 1;
+}
+
+.banana-game-description {
+  font-size: 14px;
+  color: #163B52;
+  margin: 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-start-button {
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: 2px solid #8A7023;
+  background: #D4AF37;
+  color: #0C1F2B;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 4px 8px 0 rgba(27, 73, 101, 0.3);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 6px 12px 0 rgba(27, 73, 101, 0.4);
+}
+
+.banana-game-start-button:active {
+  transform: translateY(0);
+}
+
+.banana-game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.banana-card {
+  aspect-ratio: 1;
+  border: 2px solid #B8962F;
+  background: #EFDFBF;
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+  perspective: 1000px;
+  box-shadow: 0 2px 8px 0 rgba(92, 84, 66, 0.3);
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.banana-card:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px 0 rgba(92, 84, 66, 0.4);
+}
+
+.banana-card:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.banana-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banana-card.flipped .banana-card-inner {
+  transform: rotateY(180deg);
+}
+
+.banana-card-front,
+.banana-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  font-weight: 700;
+  font-size: 24px;
+  color: #0C1F2B;
+}
+
+.banana-card-front {
+  background: #EFDFBF;
+  font-size: 28px;
+  font-weight: 700;
+  color: #8A7023;
+}
+
+.banana-card-back {
+  transform: rotateY(180deg);
+  background: #D4AF37;
+  font-size: 32px;
+}
+
+.banana-game-winner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 32px 0;
+}
+
+.banana-game-winner-emoji {
+  font-size: 80px;
+  line-height: 1;
+  animation: bounce 0.6s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.banana-game-winner-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0C1F2B;
+  margin: 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-winner-text {
+  font-size: 14px;
+  color: #163B52;
+  margin: 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.banana-game-final-score {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0C1F2B;
+  margin: 8px 0 0 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+@media (max-width: 480px) {
+  .banana-game-container {
+    padding: 24px;
+  }
+
+  .game-title {
+    font-size: 20px;
+  }
+
+  .game-subtitle {
+    font-size: 12px;
+  }
+
+  .banana-game-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .banana-card {
+    border-radius: 8px;
+  }
+
+  .banana-card-front {
+    font-size: 24px;
+  }
+
+  .banana-card-back {
+    font-size: 28px;
+  }
+
+  .banana-emoji-display {
+    font-size: 64px;
+  }
+
+  .banana-game-start-button {
+    padding: 10px 24px;
+    font-size: 13px;
+  }
+
+  .loading-title {
+    font-size: 20px;
+  }
+
+  .loading-subtitle {
+    font-size: 12px;
+  }
+
+  .spinner-ring {
+    width: 50px;
+    height: 50px;
+    border-width: 3px;
+  }
+
+  .banana-buttons {
+    flex-direction: column;
+  }
+
+  .banana-submit-btn,
+  .banana-cancel-btn {
+    width: 100%;
+  }
+}

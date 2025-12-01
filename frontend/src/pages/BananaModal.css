@@ -1,0 +1,167 @@
+.banana-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(12, 31, 43, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.banana-modal {
+  background: linear-gradient(135deg, #FFE8B6 0%, #FFF9E6 100%);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 2px solid #D4AF37;
+  text-align: center;
+}
+
+.banana-emoji {
+  font-size: 64px;
+  margin-bottom: 16px;
+  display: inline-block;
+  animation: banana-bounce 2s infinite;
+}
+
+@keyframes banana-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.banana-modal-title {
+  margin: 0 0 24px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0C1F2B;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.banana-modal-title-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.banana-modal-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.banana-emoji-small {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+.banana-modal-content {
+  margin-bottom: 28px;
+}
+
+.banana-modal-text {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2F3237;
+  text-align: center;
+}
+
+.banana-modal-text-small {
+  margin: 12px 0 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #5E636E;
+  text-align: center;
+  font-style: italic;
+}
+
+.banana-modal-text-highlight {
+  margin: 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0C1F2B;
+  padding: 12px;
+  background: rgba(212, 175, 55, 0.15);
+  border-radius: 8px;
+  border-left: 4px solid #D4AF37;
+}
+
+.banana-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.banana-modal-button {
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.banana-modal-button.primary {
+  background: #D4AF37;
+  color: #0C1F2B;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 4px 8px 0 rgba(27, 73, 101, 0.3), 0 2px 0 0 #B8962F;
+}
+
+.banana-modal-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 6px 12px 0 rgba(27, 73, 101, 0.4), 0 4px 0 0 #B8962F;
+}
+
+.banana-modal-button.primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 2px 4px 0 rgba(27, 73, 101, 0.3), 0 1px 0 0 #B8962F;
+}
+
+.banana-modal-button.secondary {
+  background: transparent;
+  color: #0C1F2B;
+  border: 2px solid #8A7023;
+}
+
+.banana-modal-button.secondary:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-1px);
+}
+
+.banana-modal-button.secondary:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 480px) {
+  .banana-modal {
+    padding: 24px;
+  }
+
+  .banana-modal-title {
+    font-size: 24px;
+  }
+
+  .banana-modal-text {
+    font-size: 14px;
+  }
+
+  .banana-modal-button {
+    padding: 12px 20px;
+    font-size: 13px;
+  }
+}

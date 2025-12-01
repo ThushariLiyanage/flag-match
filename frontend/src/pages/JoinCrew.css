@@ -1,0 +1,470 @@
+.join-crew-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: #0C1F2B;
+}
+
+.join-crew-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.join-crew-bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #000 0%, #000 100%);
+  z-index: 1;
+}
+
+.join-crew-map-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+  z-index: 2;
+}
+
+.join-crew-compass-decoration {
+  position: absolute;
+  top: 28px;
+  right: 48px;
+  width: 360px;
+  height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0.6;
+}
+
+.join-crew-header {
+  position: relative;
+  z-index: 10;
+  border-bottom: 2px solid #8A7023;
+  background: transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 -2px 4px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.join-crew-header-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 18px 128px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.join-crew-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  color: #F7EFDF;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.join-crew-back-btn:hover {
+  opacity: 0.8;
+}
+
+.join-crew-back-arrow {
+  font-size: 14px;
+}
+
+.join-crew-header-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #FFCF33;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.join-crew-header-spacer {
+  width: 100px;
+}
+
+.join-crew-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  z-index: 10;
+}
+
+.join-crew-content-wrapper {
+  width: 100%;
+  max-width: 900px;
+}
+
+.join-crew-modal {
+  background: #efdfbf;
+  border: 2px solid #B8962F;
+  border-radius: 12px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 2px 8px 0 rgba(92, 84, 66, 0.3), 0 0 100px 0 rgba(139, 69, 19, 0.1);
+}
+
+.join-crew-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #8A7023;
+}
+
+.join-crew-corner-tl {
+  top: 11px;
+  left: 11px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 2px 0 0 0;
+}
+
+.join-crew-corner-tr {
+  top: 11px;
+  right: 11px;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0 2px 0 0;
+}
+
+.join-crew-corner-bl {
+  bottom: 11px;
+  left: 11px;
+  border-right: none;
+  border-top: none;
+  border-radius: 0 0 0 2px;
+}
+
+.join-crew-corner-br {
+  bottom: 11px;
+  right: 11px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 2px 0;
+}
+
+.register-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0C1F2B;
+  text-align: center;
+  margin: 0 0 8px 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.register-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #163B52;
+  text-align: center;
+  margin: 0 0 28px 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.register-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.register-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0C1F2B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.register-form-input {
+  padding: 12px 16px;
+  border: 2px solid #B8962F;
+  border-radius: 4px;
+  background: #FFF;
+  color: #0C1F2B;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.register-form-input:focus {
+  border-color: #8A7023;
+  box-shadow: 0 0 0 3px rgba(138, 112, 35, 0.1);
+}
+
+.register-form-input::placeholder {
+  color: #8A7023;
+}
+
+.register-form-input.error {
+  border-color: #D32F2F;
+}
+
+.password-strength-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.password-strength-bar {
+  width: 100%;
+  height: 4px;
+  background: #DDD;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.password-strength-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.strength-0 {
+  width: 0%;
+  background: #D32F2F;
+}
+
+.strength-1 {
+  width: 20%;
+  background: #F57C00;
+}
+
+.strength-2 {
+  width: 40%;
+  background: #FBC02D;
+}
+
+.strength-3 {
+  width: 60%;
+  background: #7CB342;
+}
+
+.strength-4 {
+  width: 80%;
+  background: #388E3C;
+}
+
+.strength-5 {
+  width: 100%;
+  background: #2E7D32;
+}
+
+.password-requirements {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.requirement {
+  font-size: 12px;
+  font-weight: 400;
+  color: #8A7023;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.requirement-dot {
+  display: inline-block;
+  color: #B8962F;
+}
+
+.requirement.met {
+  color: #2E7D32;
+}
+
+.requirement.met .requirement-dot {
+  color: #2E7D32;
+}
+
+.register-error {
+  font-size: 12px;
+  font-weight: 400;
+  color: #D32F2F;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  margin-top: -2px;
+}
+
+.register-submit-btn {
+  padding: 14px 24px;
+  border: 2px solid #8A7023;
+  background: transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0C1F2B;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 8px rgba(0, 0, 0, 0.3), 0 4px 0 #8A7023;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  margin-top: 8px;
+}
+
+.register-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 12px rgba(0, 0, 0, 0.4), 0 6px 0 #8A7023;
+}
+
+.register-submit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 0 #8A7023;
+}
+
+.register-login-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #163B52;
+  text-align: center;
+  margin: 0;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.register-login-link {
+  background: none;
+  border: none;
+  color: #8A7023;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  font-size: 14px;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.register-login-link:hover {
+  color: #0C1F2B;
+}
+
+@media (max-width: 900px) {
+  .join-crew-header-content {
+    padding: 16px 64px;
+  }
+
+  .join-crew-modal {
+    padding: 24px;
+  }
+
+  .join-crew-compass-decoration {
+    width: 280px;
+    height: 280px;
+    right: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .join-crew-header-content {
+    padding: 14px 32px;
+  }
+
+  .join-crew-header-title {
+    font-size: 22px;
+  }
+
+  .join-crew-main {
+    padding: 16px;
+  }
+
+  .join-crew-modal {
+    padding: 20px;
+  }
+
+  .register-title {
+    font-size: 24px;
+  }
+
+  .register-subtitle {
+    font-size: 13px;
+  }
+
+  .join-crew-compass-decoration {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .join-crew-header-content {
+    padding: 12px 16px;
+  }
+
+  .join-crew-header-title {
+    font-size: 18px;
+  }
+
+  .join-crew-back-btn {
+    font-size: 12px;
+  }
+
+  .join-crew-header-spacer {
+    display: none;
+  }
+
+  .join-crew-main {
+    padding: 12px;
+  }
+
+  .join-crew-modal {
+    padding: 16px;
+  }
+
+  .register-title {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .register-subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .register-form {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .register-form-input {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .register-submit-btn {
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+
+  .register-login-text {
+    font-size: 12px;
+  }
+
+  .register-login-link {
+    font-size: 12px;
+  }
+}

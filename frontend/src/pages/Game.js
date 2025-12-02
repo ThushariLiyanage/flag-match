@@ -336,16 +336,19 @@ function Game() {
     setTimeout(() => {
       if (isCorrect) {
         const points = 100;
+        // Increase both level score and total score immediately on correct answer
         setLevelScore(prev => prev + points);
+        setScore(prev => prev + points);
 
         setTimeout(() => {
           if (currentQuestionIndex < 1) {
+            // Advance to next flag (level within this difficulty)
             setCurrentQuestionIndex(prev => prev + 1);
             setCards(prev => prev.map(c => ({ ...c, isFlipped: false })));
             setFeedback(null);
             setIsRevealing(false);
           } else {
-            setScore(prev => prev + levelScore + points);
+            // Completed all flags for this difficulty
             setShowLevelComplete(true);
             setIsRevealing(false);
           }
@@ -623,7 +626,7 @@ function Game() {
 
           <div className="level-score-container">
             <div className="score-badge">
-              <span>Level: {levelScore} | Total: {score}</span>
+              <span>Level: {currentQuestionIndex + 1} | Score: {score}</span>
             </div>
           </div>
 

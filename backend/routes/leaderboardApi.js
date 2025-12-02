@@ -18,10 +18,9 @@ router.get('/', auth, async (req, res) => {
     // 2. Transform data to match Frontend structure
     const leaderboardData = topUsers.map((user, index) => ({
       rank: index + 1,
-      name: user.username,       // Map 'username' from DB to 'name' for frontend
-      country: null,             // Your User model doesn't show a country field yet
-      points: user.totalScore,   // Map 'totalScore' from DB to 'points' for frontend
-      change: 0,                 // Default to 0
+      name: user.username,
+      country: null,
+      points: user.totalScore,
       icon: index === 0 ? 'crown' : index === 1 ? 'star' : index === 2 ? 'globe' : null,
       isCurrentUser: req.user ? user._id.toString() === req.user.id : false
     }));

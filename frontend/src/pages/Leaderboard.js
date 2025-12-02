@@ -87,16 +87,12 @@ function Leaderboard() {
                 {topThree[1] ? (
                   <>
                     <div className="podium-avatar podium-avatar-second">
+                      <div className="podium-position-badge">2</div>
                       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         {/* ... keep your existing Second Place SVG path here ... */}
                         <path d="M15.3665 3.05725C15.4249..." stroke="#0C1F2B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="podium-badge-icon">
-                      <path d="M16 29.3307V10.6641" stroke="#D4C1A1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M6.66797 16H2.66797C..." stroke="#D4C1A1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M16 10.6641C18.2091..." stroke="#D4C1A1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
                     <div className="podium-name">{topThree[1].name}</div>
                     <div className="podium-points">{formatPoints(topThree[1])}</div>
                     <div className="podium-bar podium-bar-second"></div>
@@ -113,16 +109,13 @@ function Leaderboard() {
                   <>
                     <div className="podium-avatar podium-avatar-first">
                       <div className="podium-glow"></div>
+                      <div className="podium-position-badge podium-position-first">1</div>
                       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         {/* ... keep your existing First Place SVG path here ... */}
                         <path d="M19.2684 5.44703C..." stroke="#071117" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         <path d="M8.33203 35H31.6654" stroke="#071117" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="podium-badge-icon">
-                      <path d="M19.2684 5.44703C..." stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M8.33203 35H31.6654" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
                     <div className="podium-name">{topThree[0].name}</div>
                     <div className="podium-points">{formatPoints(topThree[0])}</div>
                     <div className="podium-bar podium-bar-first"></div>
@@ -137,6 +130,7 @@ function Leaderboard() {
                 {topThree[2] ? (
                   <>
                     <div className="podium-avatar podium-avatar-third">
+                      <div className="podium-position-badge">3</div>
                       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         {/* ... keep your existing Third Place SVG path here ... */}
                         <path d="M16.0013 29.3307C..." stroke="#FBF7EF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -144,10 +138,6 @@ function Leaderboard() {
                         <path d="M2.66797 16H29.3346" stroke="#FBF7EF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="podium-badge-icon">
-                      <path d="M21.6543 10.3438L..." stroke="#8B4513" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M16.0013 29.3307C..." stroke="#8B4513" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
                     <div className="podium-name">{topThree[2].name}</div>
                     <div className="podium-points">{formatPoints(topThree[2])}</div>
                     <div className="podium-bar podium-bar-third"></div>
@@ -218,22 +208,6 @@ function Leaderboard() {
                   </div>
                   <div className="rank-points">{player.points.toLocaleString()} glory points</div>
                 </div>
-                {player.change !== null && (
-                  <div className={`rank-change ${player.change > 0 ? 'rank-change-up' : player.change < 0 ? 'rank-change-down' : 'rank-change-neutral'}`}>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g clipPath="url(#clip0_change)">
-                        <path d="M9.33203 4.08594H12.832V7.58594" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M12.8346 4.08594L7.8763 9.04427L4.95964 6.1276L1.16797 9.91927" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_change">
-                          <rect width="14" height="14" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                    <span>{player.change > 0 ? `+${player.change}` : player.change}</span>
-                  </div>
-                )}
               </div>
             ))}
           </div>

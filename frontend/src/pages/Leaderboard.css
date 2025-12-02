@@ -198,6 +198,36 @@
   gap: 8px;
 }
 
+.podium-position-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #D4C1A1 25%, #8B7355 95%);
+  border: 2px solid #163B52;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0C1F2B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.podium-position-first {
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+  background: linear-gradient(135deg, #FFD700 25%, #D4AF37 95%);
+  border: 3px solid #8A7023;
+  color: #071117;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 .podium-second {
   order: 1;
 }
@@ -244,6 +274,7 @@
   height: 80px;
   border: 4px solid #163B52;
   background: linear-gradient(135deg, #EFDFBF 25%, #D4C1A1 95.71%);
+  position: relative;
 }
 
 .podium-avatar-third {
@@ -251,6 +282,7 @@
   height: 80px;
   border: 4px solid #163B52;
   background: linear-gradient(135deg, #FF876F 25%, #763A10 95.71%);
+  position: relative;
 }
 
 .podium-badge-icon {

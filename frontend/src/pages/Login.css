@@ -243,7 +243,7 @@
   border-left: none;
   border-bottom: none;
   border-radius: 0 2px 0 0;
-  transform: rotate(90deg);
+  
 }
 
 .corner-bl {
@@ -252,7 +252,7 @@
   border-right: none;
   border-top: none;
   border-radius: 0 0 0 2px;
-  transform: rotate(-90deg);
+  
 }
 
 .corner-br {
@@ -261,7 +261,7 @@
   border-left: none;
   border-top: none;
   border-radius: 0 0 2px 0;
-  transform: rotate(180deg);
+  
 }
 
 .tab-container {

@@ -46,7 +46,11 @@ const UserSchema = new mongoose.Schema({
     type: [String],
     default: [],
     enum: ['easy', 'medium', 'hard']
-  }
+  },
+    loginCount: {
+    type: Number,
+    default: 0
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

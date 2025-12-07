@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './OTPVerification.css';
 import api from '../api';
 
-function OTPVerification({ email, onSuccess, onResend }) {
+function OTPVerification({ email, onSuccess, onResend, onBack }) {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -130,6 +130,15 @@ function OTPVerification({ email, onSuccess, onResend }) {
               disabled={loading}
             >
               {loading ? 'Verifying...' : 'Verify Code'}
+            </button>
+
+            <button
+              type="button"
+              className="otp-verification-back-btn"
+              onClick={onBack}
+              disabled={loading}
+            >
+              Back to Login
             </button>
           </form>
 

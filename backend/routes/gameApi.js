@@ -3,8 +3,8 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const GameState = require('../models/GameState');
 
-// @route   GET /api/game/load
-// @desc    Load saved game state for user (replaces loadGameState())
+
+// Load saved game state for user
 router.get('/load', auth, async (req, res) => {
   try {
     const state = await GameState.findOne({ user: req.user.id });
@@ -18,8 +18,8 @@ router.get('/load', auth, async (req, res) => {
   }
 });
 
-// @route   POST /api/game/save
-// @desc    Save or update game state (replaces saveGameState())
+
+//Save or update game state for user
 router.post('/save', auth, async (req, res) => {
   const { difficulty, currentLevel, score, currentQuestionIndex, timeRemaining, hintsRemaining, cards, flagsToFind } = req.body;
   
@@ -50,8 +50,8 @@ router.post('/save', auth, async (req, res) => {
   }
 });
 
-// @route   DELETE /api/game/clear
-// @desc    Clear saved game state (replaces clearGameState())
+
+//Clear saved game state for user
 router.delete('/clear', auth, async (req, res) => {
   try {
     await GameState.findOneAndDelete({ user: req.user.id });

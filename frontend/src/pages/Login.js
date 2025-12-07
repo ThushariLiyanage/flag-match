@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import OTPVerification from './OTPVerification';
 import api from '../api';
 
 function Login() {
@@ -9,6 +10,8 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [requiresOTP, setRequiresOTP] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const handleTabChange = (tab) => {
     if (tab === 'joincrew') {
@@ -26,6 +29,10 @@ function Login() {
       if (res.data.token) {
         localStorage.setItem('token', res.data.token);
         navigate('/home');
+      } else if (res.data.requiresOTP) {
+        // OTP is required
+        setUserEmail(email);
+        setRequiresOTP(true);
       }
     } catch (err) {
       setLoginError(err.response?.data?.msg || 'Login failed. Please try again.');
@@ -33,9 +40,31 @@ function Login() {
     }
   };
 
+  const handleOTPSuccess = (user) => {
+    navigate('/home');
+  };
+
+   const handleBackToLogin = () => {
+    setRequiresOTP(false);
+    setUserEmail('');
+    setEmail('');
+    setPassword('');
+  };
+
   const handleBackToHome = () => {
     navigate('/home');
   };
+
+  if (requiresOTP) {
+    return (
+      <OTPVerification 
+        email={userEmail} 
+        onSuccess={handleOTPSuccess}
+        onBack={handleBackToLogin}
+
+      />
+    );
+  }
 
   return (
     <div className="login-page">

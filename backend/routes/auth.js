@@ -28,7 +28,10 @@ const generateToken = (userId) => {
 // @route   POST /auth/register
 // @desc    Register a new user and send OTP (if email configured)
 router.post('/register', async (req, res) => {
+  console.log('[Auth/register] ============ REQUEST RECEIVED ============');
+  console.log('[Auth/register] Body:', req.body);
   const { username, email, password } = req.body;
+  console.log('[Auth/register] Request received:', { username, email });
 
   if (!username || !email || !password) {
     return res.status(400).json({ msg: 'Username, email, and password are required' });
@@ -40,6 +43,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ msg: 'User with this email or username already exists' });
     }
 
+    console.log('[Auth/register] Creating new user...');
     user = new User({
       username,
       email,
@@ -52,14 +56,53 @@ router.post('/register', async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
+    console.log('[Auth/register] User saved:', user.id);
 
-    const token = await generateToken(user.id);
-    res.json({
-      token,
-      success: true,
-      msg: 'Account created successfully! Welcome to Flag Match.',
-      user: { id: user.id, username: user.username, email: user.email }
+    // Generate and send OTP for verification
+    const code = generateOTP();
+    const otp = new OTP({
+      email,
+      code
     });
+    await otp.save();
+
+    // Try to send OTP email
+    try {
+      console.log('[Auth] Calling sendOTPEmail for:', email);
+      const emailResult = await sendOTPEmail(email, code);
+      console.log('[Auth] Email result:', emailResult);
+      
+      if (emailResult.skipped || !emailResult.success) {
+        // Email not configured or failed, fallback to instant login
+        console.log('[Auth] Email skipped/failed, falling back to instant login');
+        const token = await generateToken(user.id);
+        return res.json({
+          token,
+          success: true,
+          msg: 'Account created successfully! Welcome to Flag Match.',
+          user: { id: user.id, username: user.username, email: user.email }
+        });
+      }
+      
+      console.log('[Auth] Email sent, requiring OTP');
+      console.log('[Auth] About to send response...');
+      return res.json({
+        success: true,
+        msg: 'Account created! Verify your email with the code we sent.',
+        requiresOTP: true,
+        user: { id: user.id, username: user.username, email: user.email }
+      });
+    } catch (emailErr) {
+      console.warn('[Auth] Email sending error (caught):', emailErr.message);
+      // If anything unexpected happens, still allow login
+      const token = await generateToken(user.id);
+      return res.json({
+        token,
+        success: true,
+        msg: 'Account created successfully! Welcome to Flag Match.',
+        user: { id: user.id, username: user.username, email: user.email }
+      });
+    }
   } catch (err) {
     console.error('Registration error:', err);
     res.status(500).json({ msg: 'Server error', error: err.message });
@@ -82,13 +125,63 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    const token = await generateToken(user.id);
-    res.json({
-      token,
-      success: true,
-      msg: 'Login successful!',
-      user: { id: user.id, username: user.username, email: user.email }
+    // Increment login count and decide if OTP is required
+    user.loginCount = (user.loginCount || 0) + 1;
+    await user.save();
+
+    // For the first 5 logins, skip OTP
+    if (user.loginCount <= 5) {
+      const token = await generateToken(user.id);
+      return res.json({
+        token,
+        success: true,
+        msg: 'Login successful!',
+        user: { id: user.id, username: user.username, email: user.email }
+      });
+    }
+
+    // Past 5 logins: require OTP
+
+
+    await OTP.deleteMany({ email });
+    const code = generateOTP();
+    const otp = new OTP({
+      email,
+      code
     });
+    await otp.save();
+
+    // Try to send OTP email
+    try {
+      const emailResult = await sendOTPEmail(email, code);
+      if (emailResult.skipped) {
+        // Email not configured, fallback to instant login
+        const token = await generateToken(user.id);
+        return res.json({
+          token,
+          success: true,
+          msg: 'Login successful!',
+          user: { id: user.id, username: user.username, email: user.email }
+        });
+      }
+      
+      res.json({
+        success: true,
+        msg: 'OTP sent to your email. Please verify to continue.',
+        requiresOTP: true,
+        user: { id: user.id, username: user.username, email: user.email }
+      });
+    } catch (emailErr) {
+      console.warn('Email sending failed, proceeding without OTP:', emailErr);
+      // If email fails, still allow login (fallback)
+      const token = await generateToken(user.id);
+      res.json({
+        token,
+        success: true,
+        msg: 'Login successful!',
+        user: { id: user.id, username: user.username, email: user.email }
+      });
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server error' });

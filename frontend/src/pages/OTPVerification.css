@@ -185,12 +185,37 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+.otp-verification-back-btn {
+  padding: 12px 24px;
+  border: 2px solid #8A7023;
+  background: transparent;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #5D4E2C;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.otp-verification-back-btn:hover:not(:disabled) {
+  background: rgba(138, 112, 35, 0.1);
+  color: #0C1F2B;
+}
+
+.otp-verification-back-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 .otp-verification-footer {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
+    margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(184, 150, 47, 0.3);
 }
 
 .otp-verification-text {

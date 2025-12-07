@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './JoinCrew.css';
+import OTPVerification from './OTPVerification';
 import api from '../api';
 
 function JoinCrew() {
@@ -20,6 +21,8 @@ function JoinCrew() {
     hasNumber: false,
     hasSpecialChar: false
   });
+  const [requiresOTP, setRequiresOTP] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const validatePasswordStrength = (password) => {
     const strength = {
@@ -86,11 +89,35 @@ function JoinCrew() {
       if (res.data.token) {
         localStorage.setItem('token', res.data.token);
         navigate('/home');
+      } else if (res.data.requiresOTP) {
+        // OTP is required
+        setUserEmail(email);
+        setRequiresOTP(true);
       }
     } catch (err) {
       setErrors({ api: err.response?.data?.msg || err.response?.data?.error || 'Registration failed' });
     }
   };
+
+  const handleOTPSuccess = (user) => {
+    navigate('/home');
+  };
+
+   const handleBackToRegistration = () => {
+    setRequiresOTP(false);
+    setUserEmail('');
+  };
+
+  if (requiresOTP) {
+    return (
+      <OTPVerification 
+        email={userEmail} 
+        onSuccess={handleOTPSuccess}
+        onBack={handleBackToRegistration}
+
+      />
+    );
+  }
 
   return (
     <div className="join-crew-container">

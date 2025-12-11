@@ -11,6 +11,13 @@ import { getTimeBonus } from './bananaApi';
 import api from '../api';
 import './Game.css';
 
+// Audio file paths from public folder
+const clickSound = '/click.mp3';
+const failSound = '/fail.mp3';
+const flagSelectSound = '/flag-select.mp3';
+const levelupSound = '/levelup.mp3';
+const successSound = '/success.mp3';
+
 const COUNTRIES = [
   { name: 'France', flag: 'https://flagcdn.com/w320/fr.png' },
   { name: 'Germany', flag: 'https://flagcdn.com/w320/de.png' },
@@ -51,6 +58,23 @@ function getGridSize(cardCount) {
   if (cardCount === 4) return { rows: 1, cols: 4 };
   if (cardCount === 8) return { rows: 2, cols: 4 };
   return { rows: 3, cols: 4 };
+}
+
+function playSfx(src, volume = 0.35) {
+  if (!src) return;
+  const globalMuted = localStorage.getItem('gameSoundMuted') === 'true';
+  if (globalMuted) return;
+  try {
+    const audio = new Audio(src);
+    audio.preload = 'auto';
+    audio.volume = volume;
+    const playPromise = audio.play();
+    if (playPromise && playPromise.catch) {
+      playPromise.catch(err => console.warn('SFX play failed:', err?.message || err));
+    }
+  } catch (err) {
+    console.warn('SFX error:', err?.message || err);
+  }
 }
 
 const LEVEL_CONFIGS = {
@@ -152,6 +176,7 @@ function Game() {
     fetchProgression();
   }, []);
 
+
   useEffect(() => {
     if (!difficulty) {
       const checkForSavedGame = async () => {
@@ -201,7 +226,7 @@ function Game() {
     setDifficulty(level);
     setCurrentLevel(0);
     setScore(0);
-    setHints(2);
+    setHints(1);
     setHasRevived(false)
 
     const allCountries = shuffle(COUNTRIES).slice(0, 12);
@@ -261,6 +286,7 @@ function Game() {
 
   const handleGameOver = () => {
     // Logic for when the user truly fails
+    playSfx(failSound, 0.5);
     alert("Game Over! You ran out of time.");
     clearGameState();
     navigate('/leaderboard'); // Or to a Game Over screen
@@ -318,6 +344,9 @@ function Game() {
     const card = cards.find(c => c.id === cardId);
     if (!card || card.isFlipped || card.isMatched) return;
 
+    // Play click on any card interaction
+    playSfx(clickSound, 0.4);
+
     const targetFlag = getCurrentTargetFlag();
     const isCorrect = card.country.name === targetFlag.country.name;
 
@@ -335,6 +364,7 @@ function Game() {
 
     setTimeout(() => {
       if (isCorrect) {
+        playSfx(successSound, 0.5);
         const points = 100;
         // Increase both level score and total score immediately on correct answer
         setLevelScore(prev => prev + points);
@@ -349,11 +379,13 @@ function Game() {
             setIsRevealing(false);
           } else {
             // Completed all flags for this difficulty
+            playSfx(levelupSound, 0.55);
             setShowLevelComplete(true);
             setIsRevealing(false);
           }
         }, 1000);
       } else {
+        playSfx(failSound, 0.45);
         setTimeout(() => {
           setCards(prev => prev.map(c => (c.id === cardId ? { ...c, isFlipped: false } : c)));
           setFeedback(null);
@@ -375,6 +407,7 @@ function Game() {
 
     setCards(prev => prev.map(c => (c.id === correctCard.id ? { ...c, isFlipped: true } : c)));
     setFeedback({ cardId: correctCard.id, isCorrect: true, isHint: true });
+  playSfx(clickSound, 0.35);
 
     setTimeout(() => {
       setCards(prev => prev.map(c => (c.id === correctCard.id ? { ...c, isFlipped: false } : c)));
@@ -401,11 +434,13 @@ function Game() {
       const bonusTime = 30; 
       setTimeRemaining(bonusTime);
       setHasRevived(true); // Mark revival as used so they can't do it again this level
+      playSfx(successSound, 0.5);
       
       // Resume the main game
       resumeTimer();
     } else {
       // User failed the mini-game
+      playSfx(failSound, 0.45);
       handleGameOver();
     }
   };
@@ -426,6 +461,7 @@ function Game() {
     clearGameState();
     navigate('/home');
   };
+
 
   const handleResumeSavedGame = () => {
     if (savedGameState) {
@@ -469,7 +505,7 @@ function Game() {
       const nextDifficulty = levels[nextLevelIndex];
       setDifficulty(nextDifficulty);
       setCurrentLevel(nextLevelIndex);
-      setHints(2);
+      setHints(1);
       setHasRevived(false);
       setShowLevelComplete(false);
       setShowIntroModal(true);
@@ -513,8 +549,11 @@ function Game() {
 
         <header className="game-difficulty-header">
           <button className="game-difficulty-back-btn" onClick={handleHome}>
-            <span>←</span>
-            <span>Back to Port</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 10H16.6667" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="game-difficulty-back-label">Back to Port</span>
           </button>
           <h1 className="game-difficulty-title">Flag Memory Game</h1>
           <div className="game-difficulty-header-spacer"></div>
@@ -630,11 +669,12 @@ function Game() {
             </div>
           </div>
 
-          <button className="home-button" onClick={handleHome} aria-label="Home">
+          <button className="home-button" onClick={handleHome} aria-label="Return to Port">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.5 17.5V10.8333C12.5 10.6123 12.4122 10.4004 12.2559 10.2441C12.0996 10.0878 11.8877 10 11.6667 10H8.33333C8.11232 10 7.90036 10.0878 7.74408 10.2441C7.5878 10.4004 7.5 10.6123 7.5 10.8333V17.5" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M2.5 8.3303C2.49994 8.08785 2.55278 7.84831 2.65482 7.62839C2.75687 7.40847 2.90566 7.21346 3.09083 7.05696L8.92417 2.0578C9.22499 1.80355 9.60613 1.66406 10 1.66406C10.3939 1.66406 10.775 1.80355 11.0758 2.0578L16.9092 7.05696C17.0943 7.21346 17.2431 7.40847 17.3452 7.62839C17.4472 7.84831 17.5001 8.08785 17.5 8.3303V15.8303C17.5 16.2723 17.3244 16.6962 17.0118 17.0088C16.6993 17.3214 16.2754 17.497 15.8333 17.497H4.16667C3.72464 17.497 3.30072 17.3214 2.98816 17.0088C2.67559 16.6962 2.5 16.2723 2.5 15.8303V8.3303Z" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 10H16.6667" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
+            <span className="home-button-label">Return to Port</span>
           </button>
         </div>
       </header>

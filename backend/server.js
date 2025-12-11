@@ -2,8 +2,9 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
-// Load env from backend directory even if server started from repo root
+// Ensures backend .env is loaded regardless of process launch path
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 // Import Routes
@@ -20,10 +21,14 @@ const app = express();
 const PORT = 5002;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json()); // To parse JSON bodies
+app.use(cookieParser()); // To parse cookies
 
-// Use Routes (BEFORE starting server)
+// Use Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userApiRoutes);
 app.use('/api/game', gameApiRoutes);

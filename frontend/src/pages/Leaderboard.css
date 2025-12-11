@@ -80,32 +80,42 @@
 .return-btn {
   position: absolute;
   left: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: transparent;
-  border: none;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(12, 24, 36, 0.92), rgba(20, 38, 56, 0.95));
+  border: 1px solid rgba(212, 175, 55, 0.65);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 16px rgba(212, 175, 55, 0.25);
 }
 
 .return-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  stroke: #FCE8A3;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.35));
 }
 
 .return-btn span {
   font-size: 14px;
-  font-weight: 400;
-  color: #F7EFDF;
+  font-weight: 700;
+  color: #FCE8A3;
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
 }
 
 .return-btn:hover {
-  transform: translateX(-2px);
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #0f2435, #16344c);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45), 0 0 20px rgba(212, 175, 55, 0.35);
 }
 
-.return-btn:hover span {
-  color: #FFF;
+.return-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35), 0 0 12px rgba(212, 175, 55, 0.3);
 }
 
 .hall-of-fame-title {
@@ -619,12 +629,13 @@
   }
 
   .return-btn {
-    gap: 6px;
+    gap: 8px;
+    padding: 9px 14px;
   }
 
   .return-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .return-btn span {

@@ -9,9 +9,19 @@ function Login() {
   const [activeTab, setActiveTab] = useState('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [requiresOTP, setRequiresOTP] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetCode, setResetCode] = useState('');
+  const [resetPassword, setResetPassword] = useState('');
+  const [resetConfirm, setResetConfirm] = useState('');
+  const [resetStep, setResetStep] = useState('request');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetError, setResetError] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
 
   const handleTabChange = (tab) => {
     if (tab === 'joincrew') {
@@ -26,13 +36,13 @@ function Login() {
     setLoginError('');
     try {
       const res = await api.post('/auth/login', { email, password });
-      if (res.data.token) {
-        localStorage.setItem('token', res.data.token);
-        navigate('/home');
-      } else if (res.data.requiresOTP) {
+      if (res.data.requiresOTP) {
         // OTP is required
         setUserEmail(email);
         setRequiresOTP(true);
+      } else if (res.data.success) {
+        // Login successful, cookie is already set
+        navigate('/home');
       }
     } catch (err) {
       setLoginError(err.response?.data?.msg || 'Login failed. Please try again.');
@@ -44,6 +54,80 @@ function Login() {
     navigate('/home');
   };
 
+  const openResetModal = () => {
+    setShowResetModal(true);
+    setResetEmail(email || '');
+    setResetCode('');
+    setResetPassword('');
+    setResetConfirm('');
+    setResetStep('request');
+    setResetError('');
+    setResetMessage('');
+  };
+
+  const closeResetModal = () => {
+    setShowResetModal(false);
+  };
+
+  const handleSendResetCode = async () => {
+    if (!resetEmail) {
+      setResetError('Please enter your email');
+      return;
+    }
+    setResetLoading(true);
+    setResetError('');
+    setResetMessage('');
+    try {
+      const res = await api.post('/auth/forgot-password', { email: resetEmail });
+      setResetStep('verify');
+      setResetMessage(res.data?.msg || 'Reset code sent.');
+      if (res.data?.code) {
+        setResetMessage((prev) => `${prev} Code: ${res.data.code}`);
+      }
+    } catch (err) {
+      setResetError(err.response?.data?.msg || 'Failed to send reset code');
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
+  const handleCompleteReset = async () => {
+    if (!resetCode || !resetEmail || !resetPassword || !resetConfirm) {
+      setResetError('Please fill all fields');
+      return;
+    }
+    if (resetPassword !== resetConfirm) {
+      setResetError('Passwords do not match');
+      return;
+    }
+    if (resetPassword.length < 6) {
+      setResetError('Password must be at least 6 characters');
+      return;
+    }
+
+    setResetLoading(true);
+    setResetError('');
+    setResetMessage('');
+
+    try {
+      await api.post('/auth/reset-password', {
+        email: resetEmail,
+        code: resetCode,
+        newPassword: resetPassword
+      });
+      setResetMessage('Password updated. Please sign in with your new password.');
+      setEmail(resetEmail);
+      setPassword('');
+      setShowResetModal(false);
+      setLoginError('Password reset successful. Please sign in.');
+      setActiveTab('signin');
+    } catch (err) {
+      setResetError(err.response?.data?.msg || 'Failed to reset password');
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
    const handleBackToLogin = () => {
     setRequiresOTP(false);
     setUserEmail('');
@@ -51,8 +135,8 @@ function Login() {
     setPassword('');
   };
 
-  const handleBackToHome = () => {
-    navigate('/home');
+  const handleBackToLanding = () => {
+    navigate('/');
   };
 
   if (requiresOTP) {
@@ -88,9 +172,12 @@ function Login() {
 
       <div className="content-wrapper">
         <div className="features-section">
-          <button className="back-btn" onClick={handleBackToHome}>
-            <span className="back-arrow">←</span>
-            <span>Return to Port</span>
+          <button className="back-btn" onClick={handleBackToLanding}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 10H16.6667" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="back-label">Return to Port</span>
           </button>
 
           <div className="anchor-logo">
@@ -185,8 +272,8 @@ function Login() {
                   <path d="M15.8333 9.16406H4.16667C3.24619 9.16406 2.5 9.91025 2.5 10.8307V16.6641C2.5 17.5845 3.24619 18.3307 4.16667 18.3307H15.8333C16.7538 18.3307 17.5 17.5845 17.5 16.6641V10.8307C17.5 9.91025 16.7538 9.16406 15.8333 9.16406Z" stroke="white" strokeOpacity="0.6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M5.83203 9.16406V5.83073C5.83203 4.72566 6.27102 3.66585 7.05242 2.88445C7.83382 2.10305 8.89363 1.66406 9.9987 1.66406C11.1038 1.66406 12.1636 2.10305 12.945 2.88445C13.7264 3.66585 14.1654 4.72566 14.1654 5.83073V9.16406" stroke="white" strokeOpacity="0.6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <input type="password" className="auth-input" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
-                <button type="button" className="toggle-password">
+                <input type={showPassword ? 'text' : 'password'} className="auth-input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <button type="button" className="toggle-password" onClick={(e) => { e.preventDefault(); setShowPassword(!showPassword); }}>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.72006 10.2869C1.65061 10.0998 1.65061 9.89398 1.72006 9.70688C2.39647 8.06676 3.54465 6.66442 5.01903 5.67763C6.49341 4.69085 8.22759 4.16406 10.0017 4.16406C11.7759 4.16406 13.51 4.69085 14.9844 5.67763C16.4588 6.66442 17.607 8.06676 18.2834 9.70688C18.3528 9.89398 18.3528 10.0998 18.2834 10.2869C17.607 11.927 16.4588 13.3293 14.9844 14.3161C13.51 15.3029 11.7759 15.8297 10.0017 15.8297C8.22759 15.8297 6.49341 15.3029 5.01903 14.3161C3.54465 13.3293 2.39647 11.927 1.72006 10.2869Z" stroke="#163B52" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z" stroke="#163B52" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -201,11 +288,13 @@ function Login() {
               )}
 
               <div className="form-extras">
-                <label className="remember-me">
-                  <div className="checkbox"></div>
-                  <span>Remember me</span>
-                </label>
-                <button type="button" className="forgot-link">Forgot password?</button>
+                <button
+                  type="button"
+                  className="forgot-link"
+                  onClick={openResetModal}
+                >
+                  Forgot password?
+                </button>
               </div>
 
               <button type="submit" className="sail-btn">
@@ -237,6 +326,87 @@ function Login() {
           </div>
         </div>
       </div>
+
+      {showResetModal && (
+        <div className="reset-overlay">
+          <div className="reset-modal">
+            <div className="reset-header">
+              <h3>Reset Password</h3>
+              <button className="reset-close" onClick={closeResetModal} aria-label="Close reset dialog">
+                ×
+              </button>
+            </div>
+
+            <p className="reset-subtitle">
+              Enter your email to get a reset code, then set a new password.
+            </p>
+
+            <div className="reset-field">
+              <label>Email</label>
+              <input
+                type="email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                placeholder="you@example.com"
+                disabled={resetLoading}
+              />
+            </div>
+
+            {resetStep === 'verify' && (
+              <>
+                <div className="reset-field">
+                  <label>Reset Code</label>
+                  <input
+                    type="text"
+                    value={resetCode}
+                    onChange={(e) => setResetCode(e.target.value)}
+                    placeholder="6-digit code"
+                    disabled={resetLoading}
+                  />
+                </div>
+                <div className="reset-field">
+                  <label>New Password</label>
+                  <input
+                    type="password"
+                    value={resetPassword}
+                    onChange={(e) => setResetPassword(e.target.value)}
+                    placeholder="New password"
+                    disabled={resetLoading}
+                  />
+                </div>
+                <div className="reset-field">
+                  <label>Confirm Password</label>
+                  <input
+                    type="password"
+                    value={resetConfirm}
+                    onChange={(e) => setResetConfirm(e.target.value)}
+                    placeholder="Repeat new password"
+                    disabled={resetLoading}
+                  />
+                </div>
+              </>
+            )}
+
+            {resetError && <div className="reset-error">{resetError}</div>}
+            {resetMessage && <div className="reset-message">{resetMessage}</div>}
+
+            <div className="reset-actions">
+              {resetStep === 'request' ? (
+                <button className="reset-primary" onClick={handleSendResetCode} disabled={resetLoading}>
+                  {resetLoading ? 'Sending...' : 'Send Reset Code'}
+                </button>
+              ) : (
+                <button className="reset-primary" onClick={handleCompleteReset} disabled={resetLoading}>
+                  {resetLoading ? 'Updating...' : 'Update Password'}
+                </button>
+              )}
+              <button className="reset-secondary" onClick={closeResetModal} disabled={resetLoading}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

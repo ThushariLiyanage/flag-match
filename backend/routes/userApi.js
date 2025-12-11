@@ -3,11 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const User = require('../models/User');
 
-// @route   GET /api/user/profile
-// @desc    Get current user's profile (for Profile.js & Home.js stats)
+//Get current user's profile
 router.get('/profile', auth, async (req, res) => {
   try {
-    // req.user.id is attached by the auth middleware
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
@@ -16,8 +14,7 @@ router.get('/profile', auth, async (req, res) => {
   }
 });
 
-// @route   PUT /api/user/profile
-// @desc    Update user's profile (for Profile.js edit)
+//Update user's profile
 router.put('/profile', auth, async (req, res) => {
   const { username, email, crewName } = req.body;
 
@@ -27,7 +24,7 @@ router.put('/profile', auth, async (req, res) => {
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    // Check for email/username conflict
+    
     if (email && email !== user.email) {
       let existing = await User.findOne({ email });
       if (existing) return res.status(400).json({ msg: 'Email already in use' });
@@ -50,8 +47,8 @@ router.put('/profile', auth, async (req, res) => {
   }
 });
 
-// @route   POST /api/user/score
-// @desc    Update user's total score and voyage count after a game
+// Update user's total score and voyage count after a game
+
 router.post('/score', auth, async (req, res) => {
   const { finalScore } = req.body;
 
@@ -78,8 +75,7 @@ router.post('/score', auth, async (req, res) => {
   }
 });
 
-// @route   GET /api/user/progression
-// @desc    Get user's completed levels and unlocked status
+// Get user's completed levels and unlocked status
 router.get('/progression', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -107,8 +103,7 @@ router.get('/progression', auth, async (req, res) => {
   }
 });
 
-// @route   POST /api/user/complete-level
-// @desc    Mark a level as completed and unlock the next one
+//Mark a level as completed and unlock the next one
 router.post('/complete-level', auth, async (req, res) => {
   const { difficulty } = req.body;
 

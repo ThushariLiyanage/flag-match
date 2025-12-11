@@ -86,8 +86,11 @@ function Profile() {
       <header className="profile-header">
         <div className="profile-header-content">
           <button className="profile-back-btn" onClick={() => navigate('/home')}>
-            <span className="profile-back-arrow">←</span>
-            <span>Back to Port</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 10H16.6667" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="profile-back-label">Back to Port</span>
           </button>
           <div className="profile-header-title">
             <h1 className="profile-page-title">Captain's Profile</h1>
@@ -203,58 +206,6 @@ function Profile() {
                 </svg>
                 Logout
               </button>
-            </div>
-          </div>
-
-          <div className="profile-sidebar">
-            <div className="profile-crew-card">
-              <div className="profile-crew-header">
-                <h3 className="profile-crew-title">Crew: {userData.crewName}</h3>
-              </div>
-              <div className="profile-crew-content">
-                <div className="profile-crew-stat">
-                  <span className="profile-crew-stat-label">Members</span>
-                  <span className="profile-crew-stat-value">12</span>
-                </div>
-                <div className="profile-crew-stat">
-                  <span className="profile-crew-stat-label">Rank</span>
-                  <span className="profile-crew-stat-value">#5</span>
-                </div>
-                <div className="profile-crew-stat">
-                  <span className="profile-crew-stat-label">Level</span>
-                  <span className="profile-crew-stat-value">42</span>
-                </div>
-              </div>
-              <button className="profile-crew-btn">
-                Manage Crew
-              </button>
-            </div>
-
-            <div className="profile-achievements-card">
-              <h3 className="profile-achievements-title">Recent Achievements</h3>
-              <div className="profile-achievement-list">
-                <div className="profile-achievement-item">
-                  <div className="profile-achievement-icon"><FiTrendingUp /></div>
-                  <div className="profile-achievement-text">
-                    <div className="profile-achievement-name">Master Navigator</div>
-                    <div className="profile-achievement-desc">Completed 10 voyages</div>
-                  </div>
-                </div>
-                <div className="profile-achievement-item">
-                  <div className="profile-achievement-icon"><FiAnchor /></div>
-                  <div className="profile-achievement-text">
-                    <div className="profile-achievement-name">Legendary Sailor</div>
-                    <div className="profile-achievement-desc">Perfect 5 voyages</div>
-                  </div>
-                </div>
-                <div className="profile-achievement-item">
-                  <div className="profile-achievement-icon"><GiWaveCrest /></div>
-                  <div className="profile-achievement-text">
-                    <div className="profile-achievement-name">Ocean Explorer</div>
-                    <div className="profile-achievement-desc">100 nations discovered</div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

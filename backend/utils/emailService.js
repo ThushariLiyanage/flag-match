@@ -1,7 +1,7 @@
 const path = require('path');
 const nodemailer = require('nodemailer');
 
-// Ensure env vars are loaded when this module is required (matches test script behavior)
+// Validate real email credentials
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const isEmailConfigured = () => {
@@ -15,7 +15,7 @@ const isEmailConfigured = () => {
   return configured;
 };
 
-// Create transporter on demand (not cached at startup)
+// Create transporter on demand 
 const getTransporter = () => {
   if (!isEmailConfigured()) {
     console.warn('[EmailService] Email credentials not configured');
@@ -95,9 +95,71 @@ const sendOTPEmail = async (email, code) => {
     return { success: true, message: 'OTP sent successfully' };
   } catch (error) {
     console.error('[EmailService] Error sending email:', error.message);
-    // Don't throw - just return error and let caller decide what to do
+  
+   // Return error and defer handling to caller
     return { success: false, message: 'Failed to send OTP email: ' + error.message };
   }
 };
 
-module.exports = { sendOTPEmail, isEmailConfigured };
+const sendResetEmail = async (email, code) => {
+  console.log('[EmailService] sendResetEmail called for:', email);
+
+  if (!isEmailConfigured()) {
+    console.warn('[EmailService] Email credentials not configured. Skipping reset email.');
+    return { success: false, skipped: true, message: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = getTransporter();
+    if (!transporter) {
+      throw new Error('Email transporter not initialized');
+    }
+
+    const info = await transporter.sendMail({
+      from: `Flag Match <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Flag Match Password Reset',
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <style>
+              body { font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+              .header { background: #0C1F2B; color: #FFCF33; padding: 20px; text-align: center; border-radius: 8px; }
+              .header h1 { margin: 0; font-size: 28px; }
+              .content { background: #efdfbf; padding: 30px; margin: 20px 0; border-radius: 8px; text-align: center; }
+              .code { font-size: 42px; font-weight: bold; color: #0C1F2B; letter-spacing: 6px; margin: 20px 0; font-family: 'Courier New', monospace; }
+              .footer { color: #8A7023; font-size: 12px; text-align: center; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1>Reset Your Password</h1>
+              </div>
+
+              <div class="content">
+                <p>Use this code to reset your Flag Match password:</p>
+                <div class="code">${code}</div>
+                <p>This code expires in 5 minutes.</p>
+              </div>
+
+              <div class="footer">
+                <p>© Flag Match ${new Date().getFullYear()}</p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `
+    });
+
+    console.log('[EmailService] Reset email response:', info.messageId);
+    return { success: true, message: 'Reset email sent' };
+  } catch (error) {
+    console.error('[EmailService] Error sending reset email:', error.message);
+    return { success: false, message: 'Failed to send reset email: ' + error.message };
+  }
+};
+
+module.exports = { sendOTPEmail, sendResetEmail, isEmailConfigured };

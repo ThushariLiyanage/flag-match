@@ -4,18 +4,17 @@ const auth = require('../middleware/auth');
 const GameState = require('../models/GameState');
 const User = require('../models/User');
 
-// @route   GET /api/game/load
-// @desc    Load saved game state for user (replaces loadGameState())
+// Build leaderboard response with ranks, icons, and current user highlight
 
 router.get('/', auth, async (req, res) => {
   try {
-    // 1. Fetch top 10 users sorted by totalScore (descending)
+    //Fetch top 10 users sorted by totalScore (descending)
     const topUsers = await User.find()
       .sort({ totalScore: -1 })
       .limit(10)
       .select('-password'); // Exclude password for security
 
-    // 2. Transform data to match Frontend structure
+    //Transform data to match Frontend structure
     const leaderboardData = topUsers.map((user, index) => ({
       rank: index + 1,
       name: user.username,
@@ -45,10 +44,9 @@ router.get('/load', auth, async (req, res) => {
   }
 });
 
-// @route   POST /api/game/save
-// @desc    Save or update game state (replaces saveGameState())
+// Save or update game state
 router.post('/save', auth, async (req, res) => {
-  const { difficulty, currentLevel, score, currentQuestionIndex, timeRemaining, hintsRemaining, cards, flagsToFind } = req.body;
+  const { difficulty, currentLevel, score, currentQuestionIndex, timeRemaining, sRemaining, cards, flagsToFind } = req.body;
   
   const gameStateFields = {
     user: req.user.id,
@@ -64,7 +62,7 @@ router.post('/save', auth, async (req, res) => {
   };
 
   try {
-    // Use findOneAndUpdate with upsert:true to create a new state or update existing one
+    // create a new state or update existing one
     let state = await GameState.findOneAndUpdate(
       { user: req.user.id },
       { $set: gameStateFields },
@@ -77,8 +75,7 @@ router.post('/save', auth, async (req, res) => {
   }
 });
 
-// @route   DELETE /api/game/clear
-// @desc    Clear saved game state (replaces clearGameState())
+//Clear saved game state
 router.delete('/clear', auth, async (req, res) => {
   try {
     await GameState.findOneAndDelete({ user: req.user.id });

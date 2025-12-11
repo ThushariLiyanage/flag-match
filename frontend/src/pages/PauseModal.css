@@ -98,6 +98,42 @@
   transform: translateY(1px);
 }
 
+.pause-modal-music-control {
+  margin: 24px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.pause-modal-music-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 2px solid #B8962F;
+  background: rgba(212, 175, 55, 0.1);
+  color: #0C1F2B;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pause-modal-music-button:hover {
+  background: rgba(212, 175, 55, 0.2);
+  transform: scale(1.05);
+}
+
+.pause-modal-music-button:active {
+  transform: scale(0.98);
+}
+
+.music-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 @media (max-width: 480px) {
   .pause-modal {
     padding: 28px;

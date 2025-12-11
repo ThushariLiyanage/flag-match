@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function(req, res, next) {
-  // Get token from header
-  const token = req.header('Authorization');
+  // Get token from cookies or Authorization header (fallback)
+  const cookieToken = req.cookies?.token;
+  const authHeader = req.header('Authorization');
+  const token = cookieToken || (authHeader ? authHeader.split(' ')[1] : null);
 
   // Check if not token
   if (!token) {
@@ -11,9 +13,7 @@ module.exports = function(req, res, next) {
 
   // Verify token
   try {
-    // The token format is 'Bearer <token>'. We split and take the token part.
-    const justToken = token.split(' ')[1];
-    const decoded = jwt.verify(justToken, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Add user from payload
     req.user = decoded.user;

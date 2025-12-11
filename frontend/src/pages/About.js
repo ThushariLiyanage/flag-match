@@ -19,8 +19,11 @@ function About() {
       <header className="about-header">
         <div className="about-header-content">
           <button className="about-back-btn" onClick={() => navigate('/home')}>
-            <span>←</span>
-            <span>Back to Port</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 10H16.6667" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="about-back-label">Back to Port</span>
           </button>
           <h1 className="about-title">About Flag Match</h1>
           <div className="about-header-spacer"></div>
@@ -66,7 +69,7 @@ function About() {
                   <div className="about-step-number">4</div>
                   <div className="about-step-content">
                     <h3>Use Your Hints</h3>
-                    <p>You get 2 hints per level. Use them wisely to reveal the correct flag temporarily. Hints cost 25 points.</p>
+                    <p>You get 1 hints per level. Use them wisely to reveal the correct flag temporarily. Hints cost 25 points.</p>
                   </div>
                 </div>
 

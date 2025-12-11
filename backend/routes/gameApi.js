@@ -37,7 +37,7 @@ router.post('/save', auth, async (req, res) => {
   };
 
   try {
-    // Use findOneAndUpdate with upsert:true to create a new state or update existing one
+    //create a new state or update existing one
     let state = await GameState.findOneAndUpdate(
       { user: req.user.id },
       { $set: gameStateFields },

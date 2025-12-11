@@ -142,9 +142,12 @@ function JoinCrew() {
 
       <header className="join-crew-header">
         <div className="join-crew-header-content">
-          <button className="join-crew-back-btn" onClick={() => navigate('/login')}>
-            <span className="join-crew-back-arrow">←</span>
-            <span>Back to Port</span>
+          <button className="back-btn" onClick={() => navigate('/login')}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 10H16.6667" stroke="#FCE8A3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="back-label">Back to Port</span>
           </button>
           <h1 className="join-crew-header-title">Create Account</h1>
           <div className="join-crew-header-spacer"></div>

@@ -58,8 +58,8 @@ function OTPVerification({ email, onSuccess, onResend, onBack }) {
 
     try {
       const res = await api.post('/auth/verify-otp', { email, code });
-      if (res.data.token) {
-        localStorage.setItem('token', res.data.token);
+      if (res.data.user) {
+        // Cookie is already set, redirect to home
         onSuccess(res.data.user);
       }
     } catch (err) {

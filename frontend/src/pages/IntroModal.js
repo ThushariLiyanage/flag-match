@@ -19,7 +19,7 @@ function IntroModal({ difficulty, cardCount, hintsRemaining, onStart, onCancel }
           <div className="intro-info">
             <p className="intro-text">
               Find the flags before time runs out.
-              You'll get <strong>2 hints</strong>, but each hint costs <strong>25 points</strong>.
+              You'll get <strong>1 hints</strong>, but each hint costs <strong>25 points</strong>.
               If your time runs out, you can play the <strong>Banana Mini Game</strong> to earn extra time. <span className="banana-emoji-small">🍌</span>
             </p>
             <div className="intro-stats">
